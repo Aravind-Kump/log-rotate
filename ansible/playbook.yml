@@ -1,0 +1,13 @@
+---
+- import_playbook: ms.yml
+
+- import_playbook: ldap.yml
+
+- import_playbook: pg.yml
+
+- import_playbook: qpid.yml
+
+- import_playbook: rmp.yml
+
+- import_playbook: zkc.yml
+

@@ -1,0 +1,23 @@
+---
+- name: Playbook for log rotation
+  hosts: ms
+  tasks:
+  - name: command execution for ip address
+    command: hostname -i
+
+#  - name: compressing
+#    archive:
+#      path: /opt/apigee/var/log/*/*.log
+#      dest: /root/archive.$(date +%F).tar.gz
+#
+  - name: tar
+    script: ./ms.sh
+
+#   - name: moving
+#     command: scp -i id_rsa /tmp/*.$(date +%F).tar.gz c5276345@172.18.102.8:/home/c5276345/
+
+  - name: Fetch stuff from the remote and save to local
+    synchronize:  src={{ item }} dest=/opt/backup/ms/ mode=pull
+    with_items:
+        - "/root/log.management-server.*.tar.gz"
+

@@ -1,0 +1,27 @@
+---
+- name: Playbook for log rotation
+  hosts: qpid
+  tasks:
+  - name: command execution for ip address
+    command: hostname -i
+
+#  - name: compressing
+#    archive:
+#       path: /opt/apigee/var/log/*/*.log
+#         dest: /root/archive.$(date +%F).tar.gz
+  
+  - name: tar
+    script: ./qpid.sh
+
+#  - name: moving
+#    command: scp -i id_rsa /root/*.$(date +%F).tar.gz c5276345@172.18.102.128:/home/c5276345/
+
+#  - fetch:
+#      src: /root/log.openldap.*.tar.gz
+#      dest: /root-{{ inventory_hostname }}
+#      flat: yes
+
+  - name: Fetch stuff from the remote and save to local
+    synchronize:  src={{ item }} dest=/opt/backup/qpid/ mode=pull
+    with_items:
+         - "/root/log.qpid.*.tar.gz"
