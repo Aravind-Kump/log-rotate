@@ -1,0 +1,25 @@
+---
+- name: RMP
+  hosts: rmp
+  tasks:
+  - name: command execution for ip address
+    command: hostname -i
+
+  - name: Fetching log from the remote and save to local
+    synchronize:  src={{ item }} dest=/var/lib/jenkins/workspace/log_rotation/rmp/ mode=pull
+    with_items:
+         - "/opt/apigee/var/log/edge-message-processor/logs/system.log"
+         - "/opt/apigee/var/log/edge-message-processor/logs/access.log"
+
+  - name: tar
+    script: ./mp.sh
+
+  - name: Fetching log from the remote and save to local
+    synchronize:  src={{ item }} dest=/var/lib/jenkins/workspace/log_rotation/rmp/ mode=pull
+    with_items:
+         - "/opt/apigee/var/log/edge-router/logs/system.log"
+         - "/opt/apigee/var/log/edge-router/logs/access.log"
+
+  - name: tar
+    script: ./router.sh
+~
